@@ -1,29 +1,28 @@
 {
-	"current_chapter": 16,
-	"current_gun": "Blacktail",
+	"current_chapter": 7,
+	"current_gun": "Chicago Sweeper",
 	"used_guns": [
-		"Sentinel Nine",
-		"Killer7",
-		"SR-09 R",
-		"Red9",
-		"Matilda",
-		"SR M1903",
-		"Red9",
-		"W-870",
-		"Sentinel Nine",
-		"Blacktail",
-		"Skull Shaker",
-		"Riot Gun",
-		"Broken Butterfly",
-		"SR-09 R",
 		"Punisher",
-		"Blacktail"
+		"Red9",
+		"Infinite Rocket Launcher",
+		"W-870",
+		"Riot Gun",
+		"Skull Shaker",
+		"Chicago Sweeper"
 	],
 	"guns_list": [
-		"Punisher",
-		"Matilda",
 		"Striker",
+		"SR M1903",
+		"Killer7",
+		"Sentinel Nine",
+		"Handcannon",
+		"Broken Butterfly",
+		"Matilda",
+		"SR-09 R",
+		"Blacktail",
 		"Stingray",
-		"CQBR Assault Rifle"
+		"CQBR Assault Rifle",
+		"TMP",
+		"LE 5"
 	]
 }

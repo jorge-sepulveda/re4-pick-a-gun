@@ -2,20 +2,24 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/rand"
 	"os"
 )
 
-const MAXCHAPTER = 16
 const STARTCHAPTER = 1
+const MAXCHAPTER = 16
 
-var handguns = []string{"SR-09 R", "Punisher", "Red9", "Blacktail", "Matilda", "Sentinel Nine"}
-var shotguns = []string{"W-870", "Riot Gun", "Striker", "Skull Shaker"}
-var rifles = []string{"SR M1903", "Stingray", "CQBR Assault Rifle"}
-var magnums = []string{"Broken Butterfly", "Killer7"}
-
-//var specials = []string{"Bolt Thrower", "Infinite Rocket Launcher", "Chicago Sweeper"}
+var (
+	handguns = []string{"SR-09 R", "Punisher", "Red9", "Blacktail", "Matilda", "Sentinel Nine"}
+	shotguns = []string{"W-870", "Riot Gun", "Striker", "Skull Shaker"}
+	rifles   = []string{"SR M1903", "Stingray", "CQBR Assault Rifle"}
+	magnums  = []string{"Broken Butterfly", "Killer7"}
+	subs     = []string{"TMP", "LE 5"}
+	//ass = [string]{"Bolt Thrower"}
+	specials = []string{"Handcannon", "Infinite Rocket Launcher", "Chicago Sweeper"}
+)
 
 // SaveData
 type SaveData struct {
@@ -25,14 +29,19 @@ type SaveData struct {
 	GunsList       []string `json:"guns_list"`
 }
 
-// StartGame initializes and starts the game with a selected gun
-func (s *SaveData) StartGame() error {
+// StartGame initializes the gun pool, randomizing and starting the game with a selected gun
+func (s *SaveData) StartGame(guns ...[]string) error {
 	s.CurrentChapter = STARTCHAPTER
-	s.GunsList = append(s.GunsList, handguns...)
-	s.GunsList = append(s.GunsList, shotguns...)
-	s.GunsList = append(s.GunsList, rifles...)
-	s.GunsList = append(s.GunsList, magnums...)
-	s.GunsList = append(s.GunsList, handguns...)
+	for i := range guns {
+		s.GunsList = append(s.GunsList, guns[i]...)
+	}
+	//error check in the event there aren't enough guns for all the chapters.
+	if len(s.GunsList) < MAXCHAPTER {
+		return errors.New("not enough guns in the pool")
+	}
+	rand.Shuffle(len(s.GunsList), func(i, j int) {
+		s.GunsList[i], s.GunsList[j] = s.GunsList[j], s.GunsList[i]
+	})
 	s.GunsList = s.PickGun()
 	return nil
 }
@@ -65,10 +74,22 @@ func (s *SaveData) SaveGame() error {
 }
 
 func (s *SaveData) LoadGame() error {
+	backup, _ := json.Marshal(s)
 	file, _ := os.ReadFile("data.json")
 	err := json.Unmarshal([]byte(file), &s)
 	if err != nil {
-		return err
+		return errors.New("ERROR: could not unmarshall file")
+	}
+	if (MAXCHAPTER - s.CurrentChapter) > len(s.GunsList) {
+		_ = json.Unmarshal(backup, &s)
+		return errors.New("ERROR: not enough weapons in gunpool. Reverting")
 	}
 	return nil
+}
+
+func (s *SaveData) PrintData() {
+	fmt.Printf("Chapter: %d\n", s.CurrentChapter)
+	fmt.Printf("Selected gun: %s\n", s.CurrentGun)
+	fmt.Printf("Used guns list: %v\n", s.UsedGuns)
+	//fmt.Printf("Existing guns list: %v\n", s.GunsList)
 }
