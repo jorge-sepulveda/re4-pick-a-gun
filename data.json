@@ -1,6 +1,6 @@
 {
-	"current_chapter": 7,
-	"current_gun": "Chicago Sweeper",
+	"current_chapter": 8,
+	"current_gun": "SR-09 R",
 	"used_guns": [
 		"Punisher",
 		"Red9",
@@ -8,7 +8,8 @@
 		"W-870",
 		"Riot Gun",
 		"Skull Shaker",
-		"Chicago Sweeper"
+		"Chicago Sweeper",
+		"SR-09 R"
 	],
 	"guns_list": [
 		"Striker",
@@ -18,7 +19,6 @@
 		"Handcannon",
 		"Broken Butterfly",
 		"Matilda",
-		"SR-09 R",
 		"Blacktail",
 		"Stingray",
 		"CQBR Assault Rifle",

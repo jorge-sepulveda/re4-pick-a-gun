@@ -5,9 +5,10 @@ import (
 	"os"
 )
 
-func main() {
+func hi() {
 	var sd SaveData
 	var option string
+
 	err := sd.StartGame(handguns, shotguns, rifles, subs, magnums, specials)
 	if err != nil {
 		print(err.Error() + "\n")
