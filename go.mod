@@ -2,8 +2,9 @@ module github.com/jorge-sepulveda/re4-pick-a-gun
 
 go 1.21.5
 
+require fyne.io/fyne/v2 v2.4.2
+
 require (
-	fyne.io/fyne/v2 v2.4.2 // indirect
 	fyne.io/systray v1.10.1-0.20231115130155-104f5ef7839e // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.0.0 // indirect
