@@ -48,6 +48,7 @@ func hi() {
 
 		case string('r'):
 			fmt.Println("roll command sent.")
+			fmt.Println("Time to roll")
 			if sd.CurrentChapter != MAXCHAPTER {
 				sd.RollGun()
 				sd.PrintData()

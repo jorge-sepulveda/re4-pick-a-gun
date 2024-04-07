@@ -65,7 +65,7 @@ func main() {
 		log.Println("saving...")
 		confirmSave.Show()
 	})
-	loadButton := widget.NewButton("load", func() {
+	loadButton := widget.NewButton("load previously saved data", func() {
 		log.Println("loading...")
 		sd.LoadGame()
 		updateLabels(gunLabel, chapLabel, gunImage, &sd)
