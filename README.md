@@ -7,19 +7,26 @@ I wanted to spice up my runs but choosing a random gun for every chapter.
 I initially wrote this down in pen and paper but I lose those too easily.
 I thought this would be a fun project for Golang and I'm presenting the pick-a-gun service!
 
-# Feature
+## Feature
+When starting a new game, start the app and it will pick a gun for the first chapter. Every time you finish the chapter, click `roll`
 
+
+There a save and load feature for saving your progress
 
 ## Compiling on your machine
 
-# Compiling for MacOS
+### Compiling for MacOS
+
+After installing go dependencies run
+
 ```
 fyne package -os darwin -icon myapp.png
-
-# Compiling for Windows
-
 ```
+
+### Compiling for Windows
+
 To compile for windows, I use fyne-cross. Builds into the fyne-cross directory which I've just gitignored.
+
 ```
 fyne-cross windows -output winders -arch=amd64 .
 ```
@@ -33,3 +40,4 @@ The save feature will save a file to `data.json`
 - Pick a single weapon type(e.g. handguns only).
 - Pick a custom list of weapons.
 - Save multiple files.
+- re-roll
