@@ -1,8 +1,8 @@
 Website = "https://example.com"
 
 [Details]
-Icon = "icon.png"
-Name = "My App"
-ID = "com.example.app"
-Version = "1.0.0"
-Build = 1
+  Icon = "icon.png"
+  Name = "RE4 Pick-A-Gun Service"
+  ID = "github.com/jorge-sepulveda/re4-pick-a-gun"
+  Version = "0.1.0"
+  Build = 9

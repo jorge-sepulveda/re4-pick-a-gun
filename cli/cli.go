@@ -43,7 +43,7 @@ func main() {
 			fmt.Println("Confirm save? [y]")
 			fmt.Scan(&option)
 			if option == "y" {
-				sd.SaveGame()
+				sd.SaveGame("data.json")
 			} else {
 				fmt.Println("invalid input: aborting")
 			}

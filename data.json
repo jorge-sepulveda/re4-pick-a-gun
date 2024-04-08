@@ -1,6 +1,6 @@
 {
-	"current_chapter": 8,
-	"current_gun": "SR-09 R",
+	"current_chapter": 13,
+	"current_gun": "Stingray",
 	"used_guns": [
 		"Punisher",
 		"Red9",
@@ -9,20 +9,20 @@
 		"Riot Gun",
 		"Skull Shaker",
 		"Chicago Sweeper",
-		"SR-09 R"
+		"SR-09 R",
+		"TMP",
+		"Matilda",
+		"SR M1903",
+		"Sentinel Nine",
+		"Stingray"
 	],
 	"guns_list": [
 		"Striker",
-		"SR M1903",
 		"Killer7",
-		"Sentinel Nine",
 		"Handcannon",
 		"Broken Butterfly",
-		"Matilda",
 		"Blacktail",
-		"Stingray",
 		"CQBR Assault Rifle",
-		"TMP",
 		"LE 5"
 	]
 }

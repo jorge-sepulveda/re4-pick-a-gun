@@ -3,6 +3,8 @@ package core
 
 import (
 	"encoding/json"
+	"fyne.io/fyne/v2"
+
 	"errors"
 	"fmt"
 	"math/rand"
@@ -65,8 +67,11 @@ func (s *SaveData) PickGun() []string {
 
 // SaveGame marshalls the existing savedata object
 func (s *SaveData) SaveGame() error {
-	data, _ := json.MarshalIndent(s, "", "\t")
-	err := os.WriteFile("data.json", data, 0644)
+	data, err := json.MarshalIndent(s, "", "\t")
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile("data.json", data, 0644)
 	if err != nil {
 		return err
 	}
@@ -76,8 +81,11 @@ func (s *SaveData) SaveGame() error {
 
 func (s *SaveData) LoadGame() error {
 	backup, _ := json.Marshal(s)
-	file, _ := os.ReadFile("data.json")
-	err := json.Unmarshal([]byte(file), &s)
+	file, err := os.ReadFile("data.json")
+	if err != nil {
+		return fmt.Errorf("ERROR: Could not read file: %s", err)
+	}
+	err = json.Unmarshal([]byte(file), &s)
 	if err != nil {
 		return errors.New("ERROR: could not unmarshall file")
 	}
@@ -88,10 +96,27 @@ func (s *SaveData) LoadGame() error {
 	return nil
 }
 
-// PrintData prints the exusting struct details.
+// PrintData prints the existing struct details.
 func (s *SaveData) PrintData() {
 	fmt.Printf("Chapter: %d\n", s.CurrentChapter)
 	fmt.Printf("Selected gun: %s\n", s.CurrentGun)
 	fmt.Printf("Used guns list: %v\n", s.UsedGuns)
 	//fmt.Printf("Existing guns list: %v\n", s.GunsList)
+}
+
+func (s *SaveData) GuiLoadData(fileName *fyne.StaticResource) error {
+	backup, _ := json.Marshal(s)
+	_ = json.Unmarshal(fileName.StaticContent, &s)
+
+	if (MAXCHAPTER - s.CurrentChapter) > len(s.GunsList) {
+		_ = json.Unmarshal(backup, &s)
+		return errors.New("ERROR: not enough weapons in gunpool. Reverting")
+	}
+	return nil
+}
+
+func (s *SaveData) GuiSaveData(file *fyne.StaticResource) error {
+
+	//file.StaticContent = data
+	return nil
 }

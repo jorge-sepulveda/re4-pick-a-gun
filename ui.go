@@ -1,29 +1,53 @@
+// ui package contains the gui version of the pick a gun service
 package main
 
 import (
 	"fmt"
-	"image"
-	"image/jpeg"
-	"log"
-	"os"
-	"strings"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
+	"github.com/jorge-sepulveda/re4-pick-a-gun/core"
+	"image"
+	"image/jpeg"
+	"log"
+	"os"
 )
+
+var gunMap = map[string]*fyne.StaticResource{
+	"SR-09 R":                  resourceInfiniteRocketLauncherJPEG,
+	"Punisher":                 resourcePunisherJPEG,
+	"Red9":                     resourceRed9JPEG,
+	"Blacktail":                resourceBlacktailJPEG,
+	"Matilda":                  resourceMatildaJPEG,
+	"Sentinel Nine":            resourceSentinelNineJPEG,
+	"W-870":                    resourceW870JPEG,
+	"Riot Gun":                 resourceRiotGunJPEG,
+	"Striker":                  resourceStrikerJPEG,
+	"Skull Shaker":             resourceSkullShakerJPEG,
+	"SR M1903":                 resourceSRM1903JPEG,
+	"Stingray":                 resourceStingrayJPEG,
+	"CQBR Assault Rifle":       resourceCQBRAssaultRifleJPEG,
+	"Broken Butterfly":         resourceBrokenButterflyJPEG,
+	"Killer7":                  resourceKiller7JPEG,
+	"TMP":                      resourceTMPJPEG,
+	"LE 5":                     resourceLE5JPEG,
+	"Handcannon":               resourceHandcannonJPEG,
+	"Infinite Rocket Launcher": resourceInfiniteRocketLauncherJPEG,
+	"Chicago Sweeper":          resourceChicagoSweeperJPEG,
+}
 
 func init() {
 	image.RegisterFormat("jpeg", "", jpeg.Decode, jpeg.DecodeConfig)
 }
 
-func updateLabels(g *widget.Label, c *widget.Label, gi *canvas.Image, sd *SaveData) {
+func updateLabels(g *widget.Label, c *widget.Label, gi *canvas.Image, sd *core.SaveData) {
 	c.SetText(fmt.Sprintf("Current Chapter: %d", sd.CurrentChapter))
 	g.SetText(fmt.Sprintf("Current Gun: %s", sd.CurrentGun))
-	newImage := canvas.NewImageFromFile("./img/" + strings.ReplaceAll(sd.CurrentGun, " ", "_") + ".JPEG")
+	//	newImage := canvas.NewImageFromFile("./img/" + strings.ReplaceAll(sd.CurrentGun, " ", "_") + ".JPEG")
+	newImage := canvas.NewImageFromResource(gunMap[sd.CurrentGun])
 	gi.Image = newImage.Image
 	gi.File = newImage.File
 	gi.Resource = newImage.Resource
@@ -33,14 +57,14 @@ func updateLabels(g *widget.Label, c *widget.Label, gi *canvas.Image, sd *SaveDa
 func main() {
 	a := app.New()
 
-	w := a.NewWindow("Hello World")
+	w := a.NewWindow("re4-pick-a-gun service")
 
 	resolution := fyne.Size{Width: 300, Height: 400}
 	w.Resize(resolution)
 	w.CenterOnScreen()
 
-	var sd SaveData
-	err := sd.StartGame(handguns, shotguns, rifles, subs, magnums, specials)
+	var sd core.SaveData
+	err := sd.StartGame(core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
 	if err != nil {
 		print(err.Error() + "\n")
 		os.Exit(1)
@@ -48,7 +72,7 @@ func main() {
 	chapLabel := widget.NewLabel(fmt.Sprintf("Current Chapter: %d", sd.CurrentChapter))
 	gunLabel := widget.NewLabel(fmt.Sprintf("Current Gun: %s", sd.CurrentGun))
 
-	gunImage := canvas.NewImageFromFile("./img/" + strings.ReplaceAll(sd.CurrentGun, " ", "_") + ".JPEG")
+	gunImage := canvas.NewImageFromResource(gunMap[sd.CurrentGun])
 
 	gunImage.Resize(fyne.Size{Width: 200, Height: 200})
 	gunImage.FillMode = canvas.ImageFillOriginal
@@ -57,7 +81,7 @@ func main() {
 	}
 	confirmSave := dialog.NewConfirm("Saving...", "Confirm save?", func(b bool) {
 		if b {
-			sd.SaveGame()
+			sd.SaveGame("data.json")
 		}
 	}, w)
 
@@ -67,12 +91,15 @@ func main() {
 	})
 	loadButton := widget.NewButton("load previously saved data", func() {
 		log.Println("loading...")
-		sd.LoadGame()
+		err = sd.LoadGame()
+		if err != nil {
+			dialog.NewError(err, w).Show()
+		}
 		updateLabels(gunLabel, chapLabel, gunImage, &sd)
 	})
 	rollButton := widget.NewButton("roll", func() {
 		log.Println("rolling...")
-		if sd.CurrentChapter != MAXCHAPTER {
+		if sd.CurrentChapter != core.MAXCHAPTER {
 			sd.RollGun()
 			updateLabels(gunLabel, chapLabel, gunImage, &sd)
 		} else {
