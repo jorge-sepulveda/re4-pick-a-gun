@@ -1,3 +1,7 @@
-run-ui:
-	go run ui.go core.go
+ui:
+	go run ui.go
+
+cli:
+	go run cli.go
+
 
