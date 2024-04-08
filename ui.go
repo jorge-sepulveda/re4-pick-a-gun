@@ -81,7 +81,7 @@ func main() {
 	}
 	confirmSave := dialog.NewConfirm("Saving...", "Confirm save?", func(b bool) {
 		if b {
-			sd.SaveGame("data.json")
+			sd.SaveGame()
 		}
 	}, w)
 
