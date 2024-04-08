@@ -11,7 +11,7 @@ I thought this would be a fun project for Golang and I'm presenting the pick-a-g
 When starting a new game, start the app and it will pick a gun for the first chapter. Every time you finish the chapter, click `roll`
 
 
-There a save and load feature for saving your progress
+There is a save and load feature for saving your progress.
 
 ## Compiling on your machine
 
