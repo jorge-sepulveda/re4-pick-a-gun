@@ -3,9 +3,6 @@ package core
 
 import (
 	"encoding/json"
-	"fyne.io/fyne/v2"
-
-	"errors"
 	"fmt"
 	"math/rand"
 	"os"
@@ -40,7 +37,7 @@ func (s *SaveData) StartGame(guns ...[]string) error {
 	}
 	//error check in the event there aren't enough guns for all the chapters.
 	if len(s.GunsList) < MAXCHAPTER {
-		return errors.New("not enough guns in the pool")
+		return fmt.Errorf("ERROR: Not enough guns in the pool")
 	}
 	rand.Shuffle(len(s.GunsList), func(i, j int) {
 		s.GunsList[i], s.GunsList[j] = s.GunsList[j], s.GunsList[i]
@@ -79,19 +76,26 @@ func (s *SaveData) SaveGame() error {
 	return nil
 }
 
+// LoadGame loads the current saved data into the app,
 func (s *SaveData) LoadGame() error {
-	backup, _ := json.Marshal(s)
+	backup, err := json.Marshal(s)
+	if err != nil {
+		return fmt.Errorf("ERROR: Could not backup data: %s", err)
+	}
 	file, err := os.ReadFile("data.json")
 	if err != nil {
 		return fmt.Errorf("ERROR: Could not read file: %s", err)
 	}
 	err = json.Unmarshal([]byte(file), &s)
 	if err != nil {
-		return errors.New("ERROR: could not unmarshall file")
+		return fmt.Errorf("ERROR: could not load file: %s", err)
 	}
 	if (MAXCHAPTER - s.CurrentChapter) > len(s.GunsList) {
-		_ = json.Unmarshal(backup, &s)
-		return errors.New("ERROR: not enough weapons in gunpool. Reverting")
+		err = json.Unmarshal(backup, &s)
+		if err != nil {
+			return fmt.Errorf("ERROR: Could not reload backup: %s", err)
+		}
+		return fmt.Errorf("ERROR: not enough weapons in gunpool. Reverting")
 	}
 	return nil
 }
@@ -102,21 +106,4 @@ func (s *SaveData) PrintData() {
 	fmt.Printf("Selected gun: %s\n", s.CurrentGun)
 	fmt.Printf("Used guns list: %v\n", s.UsedGuns)
 	//fmt.Printf("Existing guns list: %v\n", s.GunsList)
-}
-
-func (s *SaveData) GuiLoadData(fileName *fyne.StaticResource) error {
-	backup, _ := json.Marshal(s)
-	_ = json.Unmarshal(fileName.StaticContent, &s)
-
-	if (MAXCHAPTER - s.CurrentChapter) > len(s.GunsList) {
-		_ = json.Unmarshal(backup, &s)
-		return errors.New("ERROR: not enough weapons in gunpool. Reverting")
-	}
-	return nil
-}
-
-func (s *SaveData) GuiSaveData(file *fyne.StaticResource) error {
-
-	//file.StaticContent = data
-	return nil
 }
