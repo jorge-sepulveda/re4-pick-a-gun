@@ -3,7 +3,6 @@ package core
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math/rand"
 	"os"
