@@ -109,20 +109,3 @@ func (s *SaveData) PrintData() {
 	fmt.Printf("Used guns list: %v\n", s.UsedGuns)
 	//fmt.Printf("Existing guns list: %v\n", s.GunsList)
 }
-
-func (s *SaveData) GuiLoadData(fileName *fyne.StaticResource) error {
-	backup, _ := json.Marshal(s)
-	_ = json.Unmarshal(fileName.StaticContent, &s)
-
-	if (MAXCHAPTER - s.CurrentChapter) > len(s.GunsList) {
-		_ = json.Unmarshal(backup, &s)
-		return errors.New("ERROR: not enough weapons in gunpool. Reverting")
-	}
-	return nil
-}
-
-func (s *SaveData) GuiSaveData(file *fyne.StaticResource) error {
-
-	//file.StaticContent = data
-	return nil
-}
