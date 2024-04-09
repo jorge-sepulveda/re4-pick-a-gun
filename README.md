@@ -13,6 +13,9 @@ When starting a new game, start the app and it will pick a gun for the first cha
 
 There is a save and load feature for saving your progress.
 
+
+![example-image](readmeImages/demo.png) 
+
 ## Compiling on your machine
 
 ### Compiling for MacOS
