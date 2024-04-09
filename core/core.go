@@ -3,8 +3,6 @@ package core
 
 import (
 	"encoding/json"
-	"fyne.io/fyne/v2"
-
 	"errors"
 	"fmt"
 	"math/rand"
