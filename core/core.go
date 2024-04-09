@@ -80,18 +80,24 @@ func (s *SaveData) SaveGame() error {
 }
 
 func (s *SaveData) LoadGame() error {
-	backup, _ := json.Marshal(s)
+	backup, err := json.Marshal(s)
+	if err != nil {
+		return fmt.Errorf("ERROR: Could not backup data: %s", err)
+	}
 	file, err := os.ReadFile("data.json")
 	if err != nil {
 		return fmt.Errorf("ERROR: Could not read file: %s", err)
 	}
 	err = json.Unmarshal([]byte(file), &s)
 	if err != nil {
-		return errors.New("ERROR: could not unmarshall file")
+		return fmt.Errorf("ERROR: could not load file: %s", err)
 	}
 	if (MAXCHAPTER - s.CurrentChapter) > len(s.GunsList) {
-		_ = json.Unmarshal(backup, &s)
-		return errors.New("ERROR: not enough weapons in gunpool. Reverting")
+		err = json.Unmarshal(backup, &s)
+		if err != nil {
+			return fmt.Errorf("ERROR: Could not reload backup: %s", err)
+		}
+		return fmt.Errorf("ERROR: not enough weapons in gunpool. Reverting")
 	}
 	return nil
 }
