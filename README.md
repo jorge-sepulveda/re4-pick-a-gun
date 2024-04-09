@@ -20,7 +20,7 @@ There is a save and load feature for saving your progress.
 After installing go dependencies run
 
 ```
-fyne package -os darwin -icon myapp.png
+fyne package -os darwin -icon icon.png
 ```
 
 ### Compiling for Windows
@@ -28,7 +28,7 @@ fyne package -os darwin -icon myapp.png
 To compile for windows, I use fyne-cross. Builds into the fyne-cross directory which I've just gitignored.
 
 ```
-fyne-cross windows -output winders -arch=amd64 .
+fyne-cross windows -output re4-pick-a-gun -arch=amd64
 ```
 
 run the .exe file that gets created in.
@@ -41,3 +41,8 @@ The save feature will save a file to `data.json`
 - Pick a custom list of weapons.
 - Save multiple files.
 - re-roll
+
+
+## References
+
+[fyne-cross](https://github.com/fyne-io/fyne-cross) 

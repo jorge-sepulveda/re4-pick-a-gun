@@ -4,5 +4,5 @@ Website = "https://example.com"
   Icon = "icon.png"
   Name = "RE4 Pick-A-Gun Service"
   ID = "github.com/jorge-sepulveda/re4-pick-a-gun"
-  Version = "0.1.0"
-  Build = 10
+  Version = "0.2.0"
+  Build = 13
