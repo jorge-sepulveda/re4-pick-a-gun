@@ -38,7 +38,7 @@ func (s *SaveData) StartGame(guns ...[]string) error {
 	}
 	//error check in the event there aren't enough guns for all the chapters.
 	if len(s.GunsList) < MAXCHAPTER {
-		return errors.New("not enough guns in the pool")
+		return fmt.Errorf("ERROR: Not enough guns in the pool")
 	}
 	rand.Shuffle(len(s.GunsList), func(i, j int) {
 		s.GunsList[i], s.GunsList[j] = s.GunsList[j], s.GunsList[i]
@@ -77,6 +77,7 @@ func (s *SaveData) SaveGame() error {
 	return nil
 }
 
+// LoadGame loads the current saved data into the app,
 func (s *SaveData) LoadGame() error {
 	backup, err := json.Marshal(s)
 	if err != nil {
