@@ -4,6 +4,7 @@ package core
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"os"
 )
@@ -27,6 +28,17 @@ type SaveData struct {
 	CurrentGun     string   `json:"current_gun"`
 	UsedGuns       []string `json:"used_guns"`
 	GunsList       []string `json:"guns_list"`
+	Checks         CheckedGuns
+}
+
+type CheckedGuns struct {
+	handguns   bool
+	shotguns   bool
+	rifles     bool
+	magnums    bool
+	subs       bool
+	specials   bool
+	deletePool bool
 }
 
 // StartGame initializes the gun pool, randomizing and starting the game with a selected gun
@@ -106,4 +118,53 @@ func (s *SaveData) PrintData() {
 	fmt.Printf("Selected gun: %s\n", s.CurrentGun)
 	fmt.Printf("Used guns list: %v\n", s.UsedGuns)
 	//fmt.Printf("Existing guns list: %v\n", s.GunsList)
+}
+
+func (s *SaveData) SetHandguns(b bool) {
+	s.Checks.handguns = b
+	log.Printf("handguns set to %t\n", s.Checks.handguns)
+}
+
+func (s *SaveData) SetShotguns(b bool) {
+	s.Checks.shotguns = b
+}
+
+func (s *SaveData) SetRifles(b bool) {
+	s.Checks.rifles = b
+}
+
+func (s *SaveData) SetMagnums(b bool) {
+	s.Checks.magnums = b
+}
+
+func (s *SaveData) SetSubs(b bool) {
+	s.Checks.subs = b
+}
+
+func (s *SaveData) SetSpecials(b bool) {
+	s.Checks.specials = b
+}
+
+func (s *SaveData) GetHandguns() bool {
+	return s.Checks.handguns
+}
+
+func (s *SaveData) GetShotguns() bool {
+	return s.Checks.shotguns
+}
+
+func (s *SaveData) GetRifles() bool {
+	return s.Checks.rifles
+}
+
+func (s *SaveData) GetMagnums() bool {
+	return s.Checks.magnums
+}
+
+func (s *SaveData) GetSubs() bool {
+	return s.Checks.subs
+}
+
+func (s *SaveData) GetSpecials() bool {
+	return s.Checks.specials
 }

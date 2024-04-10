@@ -1,5 +1,5 @@
 run-ui:
-	go run ui.go bundled.go
+	go run ui/ui.go ui/bundled.go
 
 run-cli:
 	go run cli/cli.go
