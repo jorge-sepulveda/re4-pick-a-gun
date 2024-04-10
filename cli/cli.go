@@ -10,7 +10,11 @@ import (
 func main() {
 	var sd core.SaveData
 	var option string
-
+	sd.SetHandguns(true)
+	sd.SetSubs(true)
+	sd.SetShotguns(true)
+	sd.SetRifles(true)
+	sd.SetMagnums(true)
 	err := sd.StartGame(core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
 	if err != nil {
 		print(err.Error() + "\n")
