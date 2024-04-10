@@ -13,6 +13,10 @@ func GetWidgets(sd core.SaveData) []fyne.CanvasObject {
 	hg := widget.NewCheck("Handguns", func(b bool) {
 		sd.SetHandguns(b)
 	})
+	// hg := widget.NewCheck("Shotguns", func(b bool) {
+	// 	sd.SetHandguns(b)
+	// })
+
 	checks = append(checks, hg)
 	log.Println("WTF")
 	return checks
