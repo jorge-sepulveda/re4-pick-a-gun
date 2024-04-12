@@ -2,19 +2,19 @@
 package main
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	//"fyne.io/fyne/v2/dialog"
+
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 	"github.com/jorge-sepulveda/re4-pick-a-gun/core"
+	"github.com/jorge-sepulveda/re4-pick-a-gun/ui/gun_menu"
 	"github.com/jorge-sepulveda/re4-pick-a-gun/ui/start_menu"
 
 	"image"
 	"image/jpeg"
-	//"log"
+	"log"
 	"os"
 )
 
@@ -45,79 +45,56 @@ func init() {
 	image.RegisterFormat("jpeg", "", jpeg.Decode, jpeg.DecodeConfig)
 }
 
-func updateLabels(g *widget.Label, c *widget.Label, gi *canvas.Image, sd *core.SaveData) {
-	c.SetText(fmt.Sprintf("Current Chapter: %d", sd.CurrentChapter))
-	g.SetText(fmt.Sprintf("Current Gun: %s", sd.CurrentGun))
-	//	newImage := canvas.NewImageFromFile("./img/" + strings.ReplaceAll(sd.CurrentGun, " ", "_") + ".JPEG")
-	newImage := canvas.NewImageFromResource(gunMap[sd.CurrentGun])
-	gi.Image = newImage.Image
-	gi.File = newImage.File
-	gi.Resource = newImage.Resource
-	gi.Refresh()
-}
-
 func main() {
 	a := app.New()
-
 	w := a.NewWindow("re4-pick-a-gun service")
 
 	resolution := fyne.Size{Width: 300, Height: 400}
 	w.Resize(resolution)
 	w.CenterOnScreen()
-
 	var sd core.SaveData
-	err := sd.StartGame(core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
-	if err != nil {
-		print(err.Error() + "\n")
-		os.Exit(1)
+
+	//Initialize start menuo
+	loadButton := widget.NewButton("load previously saved data", nil)
+	startButton := widget.NewButton("Start game with options", nil)
+	quitButton := widget.NewButton("quit", func() {
+		os.Exit(0)
+	})
+
+	widgetBox := container.NewVBox(start_menu.GetWidgets(&sd)...)
+	widgetBox.Add(loadButton)
+	widgetBox.Add(startButton)
+	widgetBox.Add(quitButton)
+
+	loadGunsBox := func() {
+		widgetBox.Hide()
+		gunBox := container.NewVBox(gun_menu.LoadGunMenu(&sd, gunMap, &w)...)
+		gunBox.Add(loadButton)
+		gunBox.Add(quitButton)
+		w.SetContent(gunBox)
 	}
-	// chapLabel := widget.NewLabel(fmt.Sprintf("Current Chapter: %d", sd.CurrentChapter))
-	// gunLabel := widget.NewLabel(fmt.Sprintf("Current Gun: %s", sd.CurrentGun))
-	//
-	gunImage := canvas.NewImageFromResource(gunMap[sd.CurrentGun])
 
-	gunImage.Resize(fyne.Size{Width: 200, Height: 200})
-	gunImage.FillMode = canvas.ImageFillOriginal
-	if err != nil {
-		fmt.Println(err)
+	startButton.OnTapped = func() {
+		log.Println("Starting Game!")
+		err := sd.StartGame()
+		if err != nil {
+			dialog.NewError(err, w).Show()
+			return
+		}
+		loadGunsBox()
 	}
-	// confirmSave := dialog.NewConfirm("Saving...", "Confirm save?", func(b bool) {
-	// 	if b {
-	// 		sd.SaveGame()
-	// 	}
-	// }, w)
 
-	// saveButton := widget.NewButton("save", func() {
-	// 	log.Println("saving...")
-	// 	confirmSave.Show()
-	// })
-	// loadButton := widget.NewButton("load previously saved data", func() {
-	// 	log.Println("loading...")
-	// 	err = sd.LoadGame()
-	// 	if err != nil {
-	// 		dialog.NewError(err, w).Show()
-	// 	}
-	// 	updateLabels(gunLabel, chapLabel, gunImage, &sd)
-	// })
-	// rollButton := widget.NewButton("roll", func() {
-	// 	log.Println("rolling...")
-	// 	if sd.CurrentChapter != core.MAXCHAPTER {
-	// 		sd.RollGun()
-	// 		updateLabels(gunLabel, chapLabel, gunImage, &sd)
-	// 	} else {
-	// 		fmt.Println("No more chapters, Stranger")
-	// 	}
-	// })
-	// quitButton := widget.NewButton("quit", func() {
-	// 	os.Exit(0)
-	// })
+	loadButton.OnTapped = func() {
+		log.Println("loading...")
+		err := sd.LoadGame()
+		if err != nil {
+			dialog.NewError(err, w).Show()
+			return
+		}
+		loadGunsBox()
+	}
 
-	//textBoxes := container.NewVBox(chapLabel, gunLabel, gunImage)
-	//buttonBox := container.NewVBox(rollButton, loadButton, saveButton, quitButton, textBoxes)
-	//w.SetContent(buttonBox)
-	//	start_menu.GetWidgets()
-	//New stuff
-	widgetBox := container.NewVBox(start_menu.GetWidgets(sd)...)
 	w.SetContent(widgetBox)
 	w.ShowAndRun()
+
 }

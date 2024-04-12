@@ -1,28 +1,33 @@
 {
-	"current_chapter": 13,
-	"current_gun": "Stingray",
+	"current_chapter": 12,
+	"current_gun": "Riot Gun",
 	"used_guns": [
-		"Punisher",
-		"Red9",
-		"Infinite Rocket Launcher",
+		"Striker",
+		"W-870",
+		"Skull Shaker",
 		"W-870",
 		"Riot Gun",
-		"Skull Shaker",
-		"Chicago Sweeper",
-		"SR-09 R",
-		"TMP",
-		"Matilda",
-		"SR M1903",
-		"Sentinel Nine",
-		"Stingray"
+		"Riot Gun",
+		"Riot Gun",
+		"W-870",
+		"Riot Gun",
+		"Striker",
+		"Striker",
+		"Riot Gun"
 	],
 	"guns_list": [
+		"Riot Gun",
+		"W-870",
 		"Striker",
-		"Killer7",
-		"Handcannon",
-		"Broken Butterfly",
-		"Blacktail",
-		"CQBR Assault Rifle",
-		"LE 5"
-	]
+		"Skull Shaker"
+	],
+	"disable_delete": true,
+	"Checks": {
+		"handguns": false,
+		"shotguns": true,
+		"rifles": false,
+		"magnums": false,
+		"subs": false,
+		"specials": false
+	}
 }

@@ -15,7 +15,7 @@ func main() {
 	sd.SetShotguns(true)
 	sd.SetRifles(true)
 	sd.SetMagnums(true)
-	err := sd.StartGame(core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
+	err := sd.StartGame()
 	if err != nil {
 		print(err.Error() + "\n")
 		os.Exit(1)

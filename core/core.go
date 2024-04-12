@@ -42,7 +42,7 @@ type CheckedGuns struct {
 }
 
 // StartGame initializes the gun pool, randomizing and starting the game with a selected gun
-func (s *SaveData) StartGame(guns ...[]string) error {
+func (s *SaveData) StartGame() error {
 	s.CurrentChapter = STARTCHAPTER
 	s.GunsList = s.BuildGunPool()
 	//error check in the event there aren't enough guns for all the chapters.
@@ -51,15 +51,23 @@ func (s *SaveData) StartGame(guns ...[]string) error {
 		fmt.Printf("Not enough guns in the pool. Disabling deleting from pool\n")
 		s.DisableDelete = true
 	}
+	fmt.Println(len(s.GunsList))
+	if len(s.GunsList) == 0 {
+		return fmt.Errorf("No guns in the pool, select at least one option")
+	}
 	rand.Shuffle(len(s.GunsList), func(i, j int) {
 		s.GunsList[i], s.GunsList[j] = s.GunsList[j], s.GunsList[i]
 	})
 	s.GunsList = s.PickGun()
+	fmt.Printf("%+v\n", s)
 	return nil
 }
 
 // Rollgame increments the current chapter and randomly selects a weapon from the pool.
 func (s *SaveData) RollGun() error {
+	if s.CurrentChapter == MAXCHAPTER {
+		return fmt.Errorf("All out of chapters, Stranger!")
+	}
 	s.CurrentChapter += 1
 	s.GunsList = s.PickGun()
 	return nil
@@ -112,6 +120,7 @@ func (s *SaveData) LoadGame() error {
 		}
 		return fmt.Errorf("ERROR: not enough weapons in gunpool. Reverting")
 	}
+	fmt.Printf("%+v\n", s)
 	return nil
 }
 
