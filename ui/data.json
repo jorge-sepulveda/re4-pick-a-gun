@@ -1,0 +1,33 @@
+{
+	"current_chapter": 12,
+	"current_gun": "Riot Gun",
+	"used_guns": [
+		"Striker",
+		"W-870",
+		"Skull Shaker",
+		"W-870",
+		"Riot Gun",
+		"Riot Gun",
+		"Riot Gun",
+		"W-870",
+		"Riot Gun",
+		"Striker",
+		"Striker",
+		"Riot Gun"
+	],
+	"guns_list": [
+		"Riot Gun",
+		"W-870",
+		"Striker",
+		"Skull Shaker"
+	],
+	"disable_delete": true,
+	"Checks": {
+		"handguns": false,
+		"shotguns": true,
+		"rifles": false,
+		"magnums": false,
+		"subs": false,
+		"specials": false
+	}
+}
