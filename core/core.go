@@ -4,7 +4,6 @@ package core
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 )
@@ -12,12 +11,14 @@ import (
 const STARTCHAPTER = 1
 const MAXCHAPTER = 16
 
+// Total amount of guns: 20
 var (
 	Handguns = []string{"SR-09 R", "Punisher", "Red9", "Blacktail", "Matilda", "Sentinel Nine"}
 	Shotguns = []string{"W-870", "Riot Gun", "Striker", "Skull Shaker"}
 	Rifles   = []string{"SR M1903", "Stingray", "CQBR Assault Rifle"}
 	Magnums  = []string{"Broken Butterfly", "Killer7"}
 	Subs     = []string{"TMP", "LE 5"}
+	//TODO: uncomment this weapon and add it in the pools, you ass. People like this one
 	//ass = [string]{"Bolt Thrower"}
 	Specials = []string{"Handcannon", "Infinite Rocket Launcher", "Chicago Sweeper"}
 )
@@ -46,30 +47,20 @@ func (s *SaveData) StartGame() error {
 	s.CurrentChapter = STARTCHAPTER
 	s.GunsList = s.BuildGunPool()
 	//error check in the event there aren't enough guns for all the chapters.
+	fmt.Println(len(s.GunsList))
+	if len(s.GunsList) == 0 {
+		return fmt.Errorf("No guns in the pool, select at least one option")
+	}
 	if len(s.GunsList) < MAXCHAPTER {
 		fmt.Printf("%v\n", s.GunsList)
 		fmt.Printf("Not enough guns in the pool. Disabling deleting from pool\n")
 		s.DisableDelete = true
-	}
-	fmt.Println(len(s.GunsList))
-	if len(s.GunsList) == 0 {
-		return fmt.Errorf("No guns in the pool, select at least one option")
 	}
 	rand.Shuffle(len(s.GunsList), func(i, j int) {
 		s.GunsList[i], s.GunsList[j] = s.GunsList[j], s.GunsList[i]
 	})
 	s.GunsList = s.PickGun()
 	fmt.Printf("%+v\n", s)
-	return nil
-}
-
-// Rollgame increments the current chapter and randomly selects a weapon from the pool.
-func (s *SaveData) RollGun() error {
-	if s.CurrentChapter == MAXCHAPTER {
-		return fmt.Errorf("All out of chapters, Stranger!")
-	}
-	s.CurrentChapter += 1
-	s.GunsList = s.PickGun()
 	return nil
 }
 
@@ -83,6 +74,19 @@ func (s *SaveData) PickGun() []string {
 		return s.GunsList
 	}
 	return append(s.GunsList[:ridx], s.GunsList[ridx+1:]...)
+}
+
+// Rollgame increments the current chapter and randomly selects a weapon from the pool.
+func (s *SaveData) RollGun() error {
+	if s.CurrentChapter >= MAXCHAPTER {
+		return fmt.Errorf("All out of chapters, Stranger!")
+	}
+	if len(s.GunsList) == 0 {
+		return fmt.Errorf("No guns in the pool to roll, Stranger!")
+	}
+	s.CurrentChapter += 1
+	s.GunsList = s.PickGun()
+	return nil
 }
 
 // SaveGame marshalls the existing savedata object
@@ -124,12 +128,12 @@ func (s *SaveData) LoadGame() error {
 	return nil
 }
 
-// PrintData prints the existing struct details.
-func (s *SaveData) PrintData() {
+// PrintData prints the existing struct details. I can pting anything I want here
+func (s *SaveData) PrintData() error {
 	fmt.Printf("Chapter: %d\n", s.CurrentChapter)
 	fmt.Printf("Selected gun: %s\n", s.CurrentGun)
 	fmt.Printf("Used guns list: %v\n", s.UsedGuns)
-	//fmt.Printf("Existing guns list: %v\n", s.GunsList)
+	return nil
 }
 
 func (s *SaveData) BuildGunPool() []string {
@@ -157,7 +161,6 @@ func (s *SaveData) BuildGunPool() []string {
 
 func (s *SaveData) SetHandguns(b bool) {
 	s.Checks.Handguns = b
-	log.Printf("handguns set to %t\n", s.Checks.Handguns)
 }
 
 func (s *SaveData) SetShotguns(b bool) {
