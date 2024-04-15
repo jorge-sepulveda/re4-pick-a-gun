@@ -2,7 +2,7 @@
 
 I've over 200 hrs in RE4 and it is one of the best games of 2023.
 
-I wanted to spice up my runs but choosing a random gun for every chapter.
+I wanted to spice up my runs by choosing a random gun for every chapter.
 
 I initially wrote this down in pen and paper but I lose those too easily.
 I thought this would be a fun project for Golang and I'm presenting the pick-a-gun service!
