@@ -37,16 +37,9 @@ run the .exe file that gets created in.
 
 The save feature will save a file to `data.json`
 
-## Testing
-I just use the commands to run some tests
-```
-go test -coverprofile=coverage.out
-go tool cover -html=coverage.out
-```
-
 
 ## Desired features
-- Pick a single weapon type(e.g. handguns only). - DONE, upcoming release
+- Pick a single weapon type(e.g. handguns only).
 - Pick a custom list of weapons.
 - Save multiple files.
 - re-roll
