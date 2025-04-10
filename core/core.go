@@ -9,7 +9,6 @@ import (
 )
 
 const STARTCHAPTER = 1
-const MAXCHAPTER = 16
 
 var (
 	Handguns = []string{"SR-09 R", "Punisher", "Red9", "Blacktail", "Matilda", "Sentinel Nine"}
@@ -18,25 +17,40 @@ var (
 	Magnums  = []string{"Broken Butterfly", "Killer7"}
 	Subs     = []string{"TMP", "LE 5"}
 	//ass = [string]{"Bolt Thrower"}
-	Specials = []string{"Handcannon", "Infinite Rocket Launcher", "Chicago Sweeper"}
+	Specials    = []string{"Handcannon", "Infinite Rocket Launcher", "Chicago Sweeper"}
+	AdaHandguns = []string{"Blacktail AC", "Punisher MC", "Red9"}
+	AdaShotguns = []string{"Sawed-off W-870"}
+	AdaRifles   = []string{"SR M1903", "Stingray"}
+	AdaSubs     = []string{"TMP"}
+	AdaSpecials = []string{"Infinite Rocket Launcher", "Chicago Sweeper", "Blast Crossbow"}
 )
 
 // SaveData
 type SaveData struct {
-	CurrentChapter int      `json:"current_chapter"`
-	CurrentGun     string   `json:"current_gun"`
-	UsedGuns       []string `json:"used_guns"`
-	GunsList       []string `json:"guns_list"`
+	SelectedCharacter string   `json:"selected_character"`
+	CurrentChapter    int      `json:"current_chapter"`
+	FinalChapter      int      `json:"final_chapter"`
+	CurrentGun        string   `json:"current_gun"`
+	UsedGuns          []string `json:"used_guns"`
+	GunsList          []string `json:"guns_list"`
 }
 
 // StartGame initializes the gun pool, randomizing and starting the game with a selected gun
-func (s *SaveData) StartGame(guns ...[]string) error {
+func (s *SaveData) StartGame(pick string, guns ...[]string) error {
+	if pick == "L" {
+		s.SelectedCharacter = "Leon"
+		s.FinalChapter = 16
+	} else if pick == "A" {
+		s.SelectedCharacter = "Ada"
+		s.FinalChapter = 7
+	}
+
 	s.CurrentChapter = STARTCHAPTER
 	for i := range guns {
 		s.GunsList = append(s.GunsList, guns[i]...)
 	}
 	//error check in the event there aren't enough guns for all the chapters.
-	if len(s.GunsList) < MAXCHAPTER {
+	if len(s.GunsList) < s.FinalChapter {
 		return fmt.Errorf("ERROR: Not enough guns in the pool")
 	}
 	rand.Shuffle(len(s.GunsList), func(i, j int) {
@@ -90,7 +104,7 @@ func (s *SaveData) LoadGame() error {
 	if err != nil {
 		return fmt.Errorf("ERROR: could not load file: %s", err)
 	}
-	if (MAXCHAPTER - s.CurrentChapter) > len(s.GunsList) {
+	if (s.FinalChapter - s.CurrentChapter) > len(s.GunsList) {
 		err = json.Unmarshal(backup, &s)
 		if err != nil {
 			return fmt.Errorf("ERROR: Could not reload backup: %s", err)
@@ -102,6 +116,7 @@ func (s *SaveData) LoadGame() error {
 
 // PrintData prints the existing struct details.
 func (s *SaveData) PrintData() {
+	fmt.Printf("Character: %s\n", s.SelectedCharacter)
 	fmt.Printf("Chapter: %d\n", s.CurrentChapter)
 	fmt.Printf("Selected gun: %s\n", s.CurrentGun)
 	fmt.Printf("Used guns list: %v\n", s.UsedGuns)

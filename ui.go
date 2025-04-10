@@ -46,7 +46,6 @@ func init() {
 func updateLabels(g *widget.Label, c *widget.Label, gi *canvas.Image, sd *core.SaveData) {
 	c.SetText(fmt.Sprintf("Current Chapter: %d", sd.CurrentChapter))
 	g.SetText(fmt.Sprintf("Current Gun: %s", sd.CurrentGun))
-	//	newImage := canvas.NewImageFromFile("./img/" + strings.ReplaceAll(sd.CurrentGun, " ", "_") + ".JPEG")
 	newImage := canvas.NewImageFromResource(gunMap[sd.CurrentGun])
 	gi.Image = newImage.Image
 	gi.File = newImage.File
@@ -64,7 +63,7 @@ func main() {
 	w.CenterOnScreen()
 
 	var sd core.SaveData
-	err := sd.StartGame(core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
+	err := sd.StartGame("L", core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
 	if err != nil {
 		print(err.Error() + "\n")
 		os.Exit(1)
@@ -99,7 +98,7 @@ func main() {
 	})
 	rollButton := widget.NewButton("roll", func() {
 		log.Println("rolling...")
-		if sd.CurrentChapter != core.MAXCHAPTER {
+		if sd.CurrentChapter != sd.FinalChapter {
 			sd.RollGun()
 			updateLabels(gunLabel, chapLabel, gunImage, &sd)
 		} else {

@@ -11,7 +11,8 @@ func main() {
 	var sd core.SaveData
 	var option string
 
-	err := sd.StartGame(core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
+	//err := sd.StartGame("L", core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
+	err := sd.StartGame("A", core.AdaHandguns, core.AdaShotguns, core.AdaRifles, core.AdaSubs, core.AdaSpecials)
 	if err != nil {
 		print(err.Error() + "\n")
 		os.Exit(1)
@@ -51,7 +52,7 @@ func main() {
 		case string('r'):
 			fmt.Println("roll command sent.")
 			fmt.Println("Time to roll")
-			if sd.CurrentChapter != core.MAXCHAPTER {
+			if sd.CurrentChapter != sd.FinalChapter {
 				sd.RollGun()
 				sd.PrintData()
 			} else {
