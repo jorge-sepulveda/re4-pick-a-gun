@@ -37,25 +37,29 @@ var gunMap = map[string]*fyne.StaticResource{
 	"Handcannon":               resourceHandcannonJPEG,
 	"Infinite Rocket Launcher": resourceInfiniteRocketLauncherJPEG,
 	"Chicago Sweeper":          resourceChicagoSweeperJPEG,
+	"Blast Crossbow":           resourceBlastCrossbowJPEG,
+	"Sawed-off W-870":          resourceSawedOffW870JPEG,
+	"Blacktail AC":             resourceBlackTailACJPEG,
+	"Punisher MC":              resourcePunisherMCJPEG,
+	"Black":                    resourceBlackJPEG,
 }
 
 func init() {
 	image.RegisterFormat("jpeg", "", jpeg.Decode, jpeg.DecodeConfig)
 }
 
-func updateLabels(g *widget.Label, c *widget.Label, gi *canvas.Image, sd *core.SaveData) {
+func updateLabels(g *widget.Label, c *widget.Label, p *widget.Label, gi *canvas.Image, sd *core.SaveData) {
 	c.SetText(fmt.Sprintf("Current Chapter: %d", sd.CurrentChapter))
 	g.SetText(fmt.Sprintf("Current Gun: %s", sd.CurrentGun))
+	p.SetText(fmt.Sprintf("Selected Character: %s", sd.SelectedCharacter))
 	newImage := canvas.NewImageFromResource(gunMap[sd.CurrentGun])
 	gi.Image = newImage.Image
 	gi.File = newImage.File
 	gi.Resource = newImage.Resource
 	gi.Refresh()
 }
-
 func main() {
 	a := app.New()
-
 	w := a.NewWindow("re4-pick-a-gun service")
 
 	resolution := fyne.Size{Width: 300, Height: 400}
@@ -63,21 +67,31 @@ func main() {
 	w.CenterOnScreen()
 
 	var sd core.SaveData
-	err := sd.StartGame("L", core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
-	if err != nil {
-		print(err.Error() + "\n")
-		os.Exit(1)
-	}
+	characterLabel := widget.NewLabel(fmt.Sprintf("Selected Character: %s", sd.SelectedCharacter))
 	chapLabel := widget.NewLabel(fmt.Sprintf("Current Chapter: %d", sd.CurrentChapter))
 	gunLabel := widget.NewLabel(fmt.Sprintf("Current Gun: %s", sd.CurrentGun))
 
-	gunImage := canvas.NewImageFromResource(gunMap[sd.CurrentGun])
+	gunImage := canvas.NewImageFromResource(gunMap["Black"])
 
 	gunImage.Resize(fyne.Size{Width: 200, Height: 200})
 	gunImage.FillMode = canvas.ImageFillOriginal
-	if err != nil {
-		fmt.Println(err)
-	}
+
+	adaButton := widget.NewButton("Seperate Ways(Ada)", func() {
+		err := sd.StartGame("A", core.AdaHandguns, core.AdaShotguns, core.AdaRifles, core.AdaSubs, core.AdaSpecials)
+		if err != nil {
+			dialog.NewError(err, w).Show()
+		}
+		updateLabels(gunLabel, chapLabel, characterLabel, gunImage, &sd)
+	})
+
+	leonButton := widget.NewButton("Main Game(Leon)", func() {
+		err := sd.StartGame("L", core.Handguns, core.Shotguns, core.Rifles, core.Subs, core.Magnums)
+		if err != nil {
+			dialog.NewError(err, w).Show()
+		}
+		updateLabels(gunLabel, chapLabel, characterLabel, gunImage, &sd)
+	})
+
 	confirmSave := dialog.NewConfirm("Saving...", "Confirm save?", func(b bool) {
 		if b {
 			sd.SaveGame()
@@ -90,17 +104,17 @@ func main() {
 	})
 	loadButton := widget.NewButton("load previously saved data", func() {
 		log.Println("loading...")
-		err = sd.LoadGame()
+		err := sd.LoadGame()
 		if err != nil {
 			dialog.NewError(err, w).Show()
 		}
-		updateLabels(gunLabel, chapLabel, gunImage, &sd)
+		updateLabels(gunLabel, chapLabel, characterLabel, gunImage, &sd)
 	})
 	rollButton := widget.NewButton("roll", func() {
 		log.Println("rolling...")
 		if sd.CurrentChapter != sd.FinalChapter {
 			sd.RollGun()
-			updateLabels(gunLabel, chapLabel, gunImage, &sd)
+			updateLabels(gunLabel, chapLabel, characterLabel, gunImage, &sd)
 		} else {
 			fmt.Println("No more chapters, Stranger")
 		}
@@ -108,9 +122,12 @@ func main() {
 	quitButton := widget.NewButton("quit", func() {
 		os.Exit(0)
 	})
-
-	textBoxes := container.NewVBox(chapLabel, gunLabel, gunImage)
+	pickPlayer := container.NewVBox(adaButton, leonButton)
+	textBoxes := container.NewVBox(characterLabel, chapLabel, gunLabel, gunImage)
 	buttonBox := container.NewVBox(rollButton, loadButton, saveButton, quitButton, textBoxes)
-	w.SetContent(buttonBox)
+
+	mainMenu := container.NewVBox(pickPlayer, buttonBox)
+	w.SetContent(mainMenu)
+
 	w.ShowAndRun()
 }

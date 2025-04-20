@@ -44,7 +44,7 @@ func (s *SaveData) StartGame(pick string, guns ...[]string) error {
 		s.SelectedCharacter = "Ada"
 		s.FinalChapter = 7
 	}
-
+	s.GunsList = []string{}
 	s.CurrentChapter = STARTCHAPTER
 	for i := range guns {
 		s.GunsList = append(s.GunsList, guns[i]...)
