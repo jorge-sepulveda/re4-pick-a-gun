@@ -2,7 +2,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"image"
+	"image/jpeg"
+	"log"
+	"os"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
@@ -10,10 +16,6 @@ import (
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 	"github.com/jorge-sepulveda/re4-pick-a-gun/core"
-	"image"
-	"image/jpeg"
-	"log"
-	"os"
 )
 
 var gunMap = map[string]*fyne.StaticResource{
@@ -116,7 +118,8 @@ func main() {
 			sd.RollGun()
 			updateLabels(gunLabel, chapLabel, characterLabel, gunImage, &sd)
 		} else {
-			fmt.Println("No more chapters, Stranger")
+			dialog.NewError(errors.New("Invalid, choose a new playthrough"), w).Show()
+
 		}
 	})
 	quitButton := widget.NewButton("quit", func() {
