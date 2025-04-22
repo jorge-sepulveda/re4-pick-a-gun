@@ -41,8 +41,8 @@ github.com/hack-pad/safejs v0.1.0 h1:qPS6vjreAqh2amUqj4WNG1zIw7qlRQJ9K10eDKMCnE8
 github.com/hack-pad/safejs v0.1.0/go.mod h1:HdS+bKF1NrE72VoXZeWzxFOVQVUSqZJAG0xNCnb+Tio=
 github.com/jeandeaual/go-locale v0.0.0-20241217141322-fcc2cadd6f08 h1:wMeVzrPO3mfHIWLZtDcSaGAe2I4PW9B/P5nMkRSwCAc=
 github.com/jeandeaual/go-locale v0.0.0-20241217141322-fcc2cadd6f08/go.mod h1:ZDXo8KHryOWSIqnsb/CiDq7hQUYryCgdVnxbj8tDG7o=
-github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.0 h1:LeQGw7Iz4A3yeNykTYjLRzmY/Vw0rVRYhuddwPCAz9g=
-github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.0/go.mod h1:fB0NZ0CNgDHVMDA6W4n1Ks7/E0a4oZvDA5YkTTuAIhM=
+github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.1 h1:9INQl9vb9PX6mckOw1ZBGSRE7M8eQqEzgI9kuErpIy4=
+github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.1/go.mod h1:fB0NZ0CNgDHVMDA6W4n1Ks7/E0a4oZvDA5YkTTuAIhM=
 github.com/jsummers/gobmp v0.0.0-20230614200233-a9de23ed2e25 h1:YLvr1eE6cdCqjOe972w/cYF+FjW34v27+9Vo5106B4M=
 github.com/jsummers/gobmp v0.0.0-20230614200233-a9de23ed2e25/go.mod h1:kLgvv7o6UM+0QSf0QjAse3wReFDsb9qbZJdfexWlrQw=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
