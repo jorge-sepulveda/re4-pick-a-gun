@@ -4,7 +4,7 @@ go 1.21.5
 
 require (
 	fyne.io/fyne/v2 v2.4.2
-	github.com/jorge-sepulveda/re4-pick-a-gun/core v0.0.0-20250421124139-9583038f3748
+	github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.0
 )
 
 require (
@@ -21,7 +21,6 @@ require (
 	github.com/go-text/typesetting v0.0.0-20230616162802-9c17dd34aa4a // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/gopherjs/gopherjs v1.17.2 // indirect
-	github.com/jorge-sepulveda/re4-pick-a-gun-core v1.0.0 // indirect
 	github.com/jsummers/gobmp v0.0.0-20151104160322-e2ba15ffa76e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/srwiley/oksvg v0.0.0-20221011165216-be6e8873101c // indirect
