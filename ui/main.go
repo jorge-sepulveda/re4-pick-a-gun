@@ -60,6 +60,17 @@ func updateLabels(g *widget.Label, c *widget.Label, p *widget.Label, gi *canvas.
 	gi.Resource = newImage.Resource
 	gi.Refresh()
 }
+
+// TODO: Instead of this helper function, see if core handle it instead.
+// FileExists checks if the file at path exists and is not a directory
+func FileExists(path string) bool {
+	info, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
+}
+
 func main() {
 	a := app.New()
 	w := a.NewWindow("re4-pick-a-gun service")
@@ -95,22 +106,29 @@ func main() {
 	})
 
 	confirmSave := dialog.NewConfirm("Saving...", "Confirm save?", func(b bool) {
-		if b {
+		if b && sd.CurrentChapter != 0 {
 			sd.SaveGame()
+		} else {
+			dialog.NewError(errors.New("Cannot save without starting the game."), w).Show()
 		}
 	}, w)
 
 	saveButton := widget.NewButton("save", func() {
 		log.Println("saving...")
-		confirmSave.Show()
+		if sd.CurrentChapter == 0 {
+			dialog.NewError(errors.New("Cannot save without starting the game."), w).Show()
+		} else {
+			confirmSave.Show()
+		}
 	})
 	loadButton := widget.NewButton("load previously saved data", func() {
 		log.Println("loading...")
 		err := sd.LoadGame()
 		if err != nil {
 			dialog.NewError(err, w).Show()
+		} else {
+			updateLabels(gunLabel, chapLabel, characterLabel, gunImage, &sd)
 		}
-		updateLabels(gunLabel, chapLabel, characterLabel, gunImage, &sd)
 	})
 	rollButton := widget.NewButton("roll", func() {
 		log.Println("rolling...")
