@@ -4,7 +4,7 @@ go 1.21.5
 
 require (
 	fyne.io/fyne/v2 v2.6.0
-	github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.0
+	github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.1
 )
 
 require (
