@@ -1,8 +1,8 @@
 {
 	"selected_character": "Leon",
-	"current_chapter": 14,
+	"current_chapter": 1,
 	"final_chapter": 16,
-	"current_gun": "Blacktail",
+	"current_gun": "Matilda",
 	"used_guns": [
 		"Punisher",
 		"Stingray",
@@ -17,11 +17,27 @@
 		"W-870",
 		"Matilda",
 		"SR-09 R",
-		"Blacktail"
+		"Blacktail",
+		"SR M1903",
+		"Broken Butterfly",
+		"Matilda"
 	],
 	"guns_list": [
+		"Sentinel Nine",
 		"Riot Gun",
+		"CQBR Assault Rifle",
+		"SR-09 R",
+		"Broken Butterfly",
+		"Punisher",
+		"TMP",
 		"SR M1903",
-		"Broken Butterfly"
+		"Stingray",
+		"Blacktail",
+		"Red9",
+		"LE 5",
+		"Skull Shaker",
+		"Killer7",
+		"Striker",
+		"W-870"
 	]
 }
