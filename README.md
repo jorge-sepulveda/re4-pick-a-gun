@@ -10,20 +10,39 @@ I thought this would be a fun project for Golang and I'm presenting the pick-a-g
 ## Feature
 When starting a new game, start the app and it will pick a gun for the first chapter. Every time you finish the chapter, click `roll`
 
-
 There is a save and load feature for saving your progress.
-
 
 ![example-image](readmeImages/demo.png) 
 
-## Compiling on your machine
+## Running the CLI
+
+To run the cli, inside of `cli` do
+
+```sh
+go mod tidy
+make run
+```
+
+## Running the UI
+
+To run the ui, inside of `ui` do
+
+```sh
+go mod tidy
+make run
+```
+
+## Packaging/Distribution
+
+I'm not an apple developer so I cannot distribute without signing the application. If you want to build the application, I recommend building and self signing
 
 ### Compiling for MacOS
 
-After installing go dependencies run
+After installing go dependencies run the package command and then self sign it. 
 
 ```
 fyne package -os darwin -icon icon.png
+codesign --force --deep --sign - ./ui.app
 ```
 
 ### Compiling for Windows
