@@ -1,0 +1,4 @@
+github.com/gorilla/mux v1.8.1 h1:TuBL49tXwgrFYWhqrNgrUNEY92u81SPhu7sTdzQEiWY=
+github.com/gorilla/mux v1.8.1/go.mod h1:AKf9I4AEqPTmMytcMc0KkNouC66V3BtZ4qD5fmWSiMQ=
+github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.1 h1:9INQl9vb9PX6mckOw1ZBGSRE7M8eQqEzgI9kuErpIy4=
+github.com/jorge-sepulveda/re4-pick-a-gun/core v1.0.1/go.mod h1:fB0NZ0CNgDHVMDA6W4n1Ks7/E0a4oZvDA5YkTTuAIhM=
