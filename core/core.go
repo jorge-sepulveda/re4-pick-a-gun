@@ -1,4 +1,4 @@
-// Paxkage core provides the main functionality. Loading, saving and rolloing guns  are inside this.
+// Package core provides the main functionality. Loading, saving and rolloing guns  are inside this.
 package core
 
 import (
@@ -115,10 +115,20 @@ func (s *SaveData) LoadGame() error {
 }
 
 // PrintData prints the existing struct details.
-func (s *SaveData) PrintData() {
+func (s *SaveData) PrintData() error {
 	fmt.Printf("Character: %s\n", s.SelectedCharacter)
 	fmt.Printf("Chapter: %d\n", s.CurrentChapter)
 	fmt.Printf("Selected gun: %s\n", s.CurrentGun)
 	fmt.Printf("Used guns list: %v\n", s.UsedGuns)
 	//fmt.Printf("Existing guns list: %v\n", s.GunsList)
+	return nil
+}
+
+// LoadString will parse a byte array for unmarshalling into the struct. Mostly used in API requests.
+func (s *SaveData) LoadString(data []byte) error {
+	err := json.Unmarshal(data, &s)
+	if err != nil {
+		return fmt.Errorf("ERROR: Invalid payload")
+	}
+	return nil
 }
